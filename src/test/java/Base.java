@@ -43,7 +43,11 @@ public class Base {
         driver.findElement(locator).sendKeys(text);
     }
 
-    public void click(String name){
+    public void clickId(String name){
+        driver.findElement(By.id(name)).click();
+    }
+
+    public void clickClass(String name){
         driver.findElement(By.className(name)).click();
     }
 
@@ -58,6 +62,10 @@ public class Base {
     public void visit(String url){
         driver.manage().window().maximize();
         driver.get(url);
+    }
+
+    public void redirect(String a){
+        driver.navigate().to(a);
     }
 
     public void submit(By locator){
