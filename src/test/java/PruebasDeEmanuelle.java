@@ -1,6 +1,8 @@
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
@@ -16,7 +18,7 @@ import java.util.List;
 
 import org.junit.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class PruebasDeEmanuelle {
 
@@ -75,6 +77,113 @@ public class PruebasDeEmanuelle {
     @Test
     public void prueba2() {
 
+        base.redirect("http://localhost:8080/admin/content/pages/create.html");
+
+        base.clickId("visible1");
+        base.clickId("linkToMenu1");
+        base.clearText(By.id("code"));
+        base.clearText(By.id("order"));
+        base.setText("003",By.id("order"));
+        base.clearText(By.id("name0"));
+        base.setText("Test",By.id("name0"));
+        base.clearText(By.id("seUrl0"));
+        base.setText("www.google.com",By.id("seUrl0"));
+        base.clearText(By.id("descriptions0.metatagTitle"));
+        base.setText("Titulo de prueba",By.id("descriptions0.metatagTitle"));
+        base.clearText(By.id("descriptions0.metatagDescription"));
+        base.setText("Keywords de prueba",By.id("descriptions0.metatagKeywords"));
+        base.clearText(By.id("descriptions0.metatagDescription"));
+        base.setText("Descripción de prueba",By.id("descriptions0.metatagDescription"));
+
+        base.clickClass("btn-success");
+
+        assertEquals("", base.getText(By.id("store.success")));
+
+    }
+
+    @Test
+    public void prueba3() {
+
+        base.redirect("http://localhost:8080/admin/content/pages/create.html");
+
+        base.clickId("visible1");
+        base.clickId("linkToMenu1");
+        base.clearText(By.id("code"));
+        base.setText("001",By.id("code"));
+        base.clearText(By.id("order"));
+        base.setText("0",By.id("order"));
+        base.clearText(By.id("seUrl0"));
+        base.setText("www.google.com",By.id("seUrl0"));
+        base.clearText(By.id("descriptions0.metatagTitle"));
+        base.setText("Titulo de prueba",By.id("descriptions0.metatagTitle"));
+        base.clearText(By.id("descriptions0.metatagDescription"));
+        base.setText("Keywords de prueba",By.id("descriptions0.metatagKeywords"));
+        base.clearText(By.id("descriptions0.metatagDescription"));
+        base.setText("Descripción de prueba",By.id("descriptions0.metatagDescription"));
+
+        base.clickClass("btn-success");
+
+        assertEquals("", base.getText(By.id("store.success")));
+
+    }
+
+    @Test
+    public void prueba4() {
+
+        base.redirect("http://localhost:8080/admin/content/pages/create.html");
+
+        base.clickId("visible1");
+        base.clickId("linkToMenu1");
+        base.clearText(By.id("code"));
+        base.setText("001",By.id("code"));
+        base.clearText(By.id("order"));
+        base.setText("0",By.id("order"));
+        base.clearText(By.id("name0"));
+        base.setText("Nombre de prueba extremadamente grandeNombre de prueba extremadamente grande",By.id("name0"));
+        base.clearText(By.id("seUrl0"));
+        base.setText("www.google.com",By.id("seUrl0"));
+        base.clearText(By.id("descriptions0.metatagTitle"));
+        base.setText("Titulo de prueba",By.id("descriptions0.metatagTitle"));
+        base.clearText(By.id("descriptions0.metatagDescription"));
+        base.setText("Keywords de prueba",By.id("descriptions0.metatagKeywords"));
+        base.clearText(By.id("descriptions0.metatagDescription"));
+        base.setText("Descripción de prueba",By.id("descriptions0.metatagDescription"));
+
+        base.clickClass("btn-success");
+
+        assertEquals("", base.getText(By.id("store.success")));
+
+    }
+
+    @Test
+    public void prueba5() {
+
+        base.redirect("http://localhost:8080/admin/content/pages/create.html");
+
+        base.clickId("visible1");
+        base.clickId("linkToMenu1");
+        base.clearText(By.id("code"));
+        base.setText("001",By.id("code"));
+        base.clearText(By.id("order"));
+        base.setText("0",By.id("order"));
+        base.clearText(By.id("name0"));
+        base.setText("Test",By.id("name0"));
+        base.clearText(By.id("seUrl0"));
+        base.setText("www.google.com",By.id("seUrl0"));
+        base.clearText(By.id("descriptions0.metatagTitle"));
+        base.setText("Titulo de prueba",By.id("descriptions0.metatagTitle"));
+        base.clearText(By.id("descriptions0.metatagDescription"));
+        base.clearText(By.id("descriptions0.metatagDescription"));
+        base.setText("Descripción de prueba",By.id("descriptions0.metatagDescription"));
+
+        base.clickClass("btn-success");
+
+        assertEquals("Request completed with success", base.getText(By.id("store.success")));
+
+    }
+
+    @Test
+    public void prueba6() {
 
         base.redirect("http://localhost:8080/admin/content/pages/create.html");
 
@@ -96,99 +205,235 @@ public class PruebasDeEmanuelle {
 
         base.clickClass("btn-success");
 
-        assertEquals("", base.getText(By.id("store.success")));
-
-
-    }
-
-    @Test
-    public void prueba3() {
-
-        assertEquals(0, 0);
-
-    }
-
-    @Test
-    public void prueba4() {
-
-        assertEquals(0, 0);
-
-    }
-
-    @Test
-    public void prueba5() {
-
-        assertEquals(0, 0);
-
-    }
-
-    @Test
-    public void prueba6() {
-
-        assertEquals(0, 0);
+        assertEquals("Request completed with success", base.getText(By.id("store.success")));
 
     }
 
     @Test
     public void prueba7() {
 
-        assertEquals(0, 0);
+        base.redirect("http://localhost:8080/admin/content/pages/create.html");
+
+        base.clickId("visible1");
+        base.clickId("linkToMenu1");
+        base.clearText(By.id("code"));
+        base.setText("001",By.id("code"));
+        base.clearText(By.id("order"));
+        base.setText("0",By.id("order"));
+        base.clearText(By.id("name0"));
+        base.setText("Test",By.id("name0"));
+        base.clearText(By.id("seUrl0"));
+        base.clearText(By.id("descriptions0.metatagTitle"));
+        base.setText("Titulo de prueba",By.id("descriptions0.metatagTitle"));
+        base.clearText(By.id("descriptions0.metatagDescription"));
+        base.setText("Keywords de prueba",By.id("descriptions0.metatagKeywords"));
+        base.clearText(By.id("descriptions0.metatagDescription"));
+        base.setText("Descripción de prueba",By.id("descriptions0.metatagDescription"));
+
+        base.clickClass("btn-success");
+
+        assertEquals("Request completed with success", base.getText(By.id("store.success")));
 
     }
 
     @Test
-    public void prueba8() {
+    public void prueba8() throws InterruptedException {
 
-        assertEquals(0, 0);
+        // Crear una página
 
-    }
+        base.redirect("http://localhost:8080/admin/content/pages/create.html");
 
-    @Test
-    public void prueba9() {
+        base.clickId("visible1");
+        base.clickId("linkToMenu1");
+        base.clearText(By.id("code"));
+        base.setText("001",By.id("code"));
+        base.clearText(By.id("order"));
+        base.setText("0",By.id("order"));
+        base.clearText(By.id("name0"));
+        base.setText("Test",By.id("name0"));
+        base.clearText(By.id("seUrl0"));
+        base.setText("www.google.com",By.id("seUrl0"));
+        base.clearText(By.id("descriptions0.metatagTitle"));
+        base.setText("Titulo de prueba",By.id("descriptions0.metatagTitle"));
+        base.clearText(By.id("descriptions0.metatagDescription"));
+        base.setText("Keywords de prueba",By.id("descriptions0.metatagKeywords"));
+        base.clearText(By.id("descriptions0.metatagDescription"));
+        base.setText("Descripción de prueba",By.id("descriptions0.metatagDescription"));
 
-        assertEquals(0, 0);
+        base.clickClass("btn-success");
 
-    }
+        Thread.sleep(1000);
 
-    @Test
-    public void prueba10() {
+        base.redirect("http://localhost:8080/admin/content/pages/list.html");
 
-        assertEquals(0, 0);
+        Thread.sleep(1000);
+        Actions act = new Actions(base.getDriver());
+        WebElement shop = base.getDriver().findElement((By.xpath("/html/body/div[1]/div[3]/div/div[2]/div/div/div/div/div/div/div/div/div[2]/div/div[3]/div/div[1]/table/tbody[2]/tr/td[5]/div/nobr/img")));
+        act.moveToElement(shop).click().build().perform();
 
-    }
+        Thread.sleep(1000);
 
-    @Test
-    public void prueba11() {
+        base.acceptAlert();
 
-        assertEquals(0, 0);
+        Thread.sleep(1000);
 
-    }
-
-    @Test
-    public void prueba12() {
-
-        assertEquals(0, 0);
-
-    }
-
-    @Test
-    public void prueba13() {
-
-        assertEquals(0, 0);
-
-    }
-
-    @Test
-    public void prueba14() {
-
-        assertEquals(0, 0);
+        assertEquals("No items to show.", base.getText(By.className("emptyMessage")));
 
     }
 
     @Test
-    public void prueba15() {
+    public void prueba9() throws InterruptedException {
 
-        assertEquals(0, 0);
+        base.redirect("http://localhost:8080/admin/content/boxes/create.html");
+        base.clickId("visible1");
+        base.clickId("linkToMenu1");
+        base.clearText(By.id("code"));
+        base.setText("002",By.id("code"));
+        base.clearText(By.id("order"));
+        base.setText("0",By.id("order"));
+        base.clearText(By.id("name0"));
+        base.setText("Test",By.id("name0"));
+        base.clickClass("btn-success");
+
+        Thread.sleep(1000);
+
+        assertEquals("Request completed with success", base.getText(By.className("alert-success")));
+
+    }
+
+    @Test
+    public void prueba10() throws InterruptedException {
+
+        base.redirect("http://localhost:8080/admin/content/boxes/create.html");
+        base.clickId("visible1");
+        base.clickId("linkToMenu1");
+        base.clearText(By.id("code"));
+        base.clearText(By.id("order"));
+        base.setText("0",By.id("order"));
+        base.clearText(By.id("name0"));
+        base.setText("Test",By.id("name0"));
+        base.clickClass("btn-success");
+
+        Thread.sleep(1000);
+
+        assertNotEquals("Request completed with success", base.getText(By.className("alert-success")));
+
+    }
+
+    @Test
+    public void prueba11() throws InterruptedException {
+
+        base.redirect("http://localhost:8080/admin/content/boxes/create.html");
+        base.clickId("visible1");
+        base.clickId("linkToMenu1");
+        base.clearText(By.id("code"));
+        base.setText("002",By.id("code"));
+        base.clearText(By.id("order"));
+        base.setText("0",By.id("order"));
+        base.clearText(By.id("name0"));
+        base.clickClass("btn-success");
+
+        Thread.sleep(1000);
+
+        assertNotEquals("Request completed with success", base.getText(By.className("alert-success")));
+
+    }
+
+    @Test
+    public void prueba12() throws InterruptedException {
+
+        base.redirect("http://localhost:8080/admin/content/boxes/create.html");
+        base.clickId("visible1");
+        base.clickId("linkToMenu1");
+        base.clearText(By.id("code"));
+        base.setText("002",By.id("code"));
+        base.clearText(By.id("order"));
+        base.setText("0",By.id("order"));
+        base.clearText(By.id("name0"));
+        base.setText("Test",By.id("name0"));
+        base.clickClass("btn-success");
+
+        base.redirect("http://localhost:8080/admin/content/boxes/create.html");
+        base.clickId("visible1");
+        base.clickId("linkToMenu1");
+        base.clearText(By.id("code"));
+        base.setText("002",By.id("code"));
+        base.clearText(By.id("order"));
+        base.setText("0",By.id("order"));
+        base.clearText(By.id("name0"));
+        base.setText("Test",By.id("name0"));
+        base.clickClass("btn-success");
+
+        Thread.sleep(1000);
+
+        assertEquals("Request completed with success", base.getText(By.className("alert-success")));
+
+    }
+
+    @Test
+    public void prueba13() throws InterruptedException {
+
+        base.redirect("http://localhost:8080/admin/content/contentImages.html");
+        WebElement uploadElement = base.getDriver().findElement(By.className("input-file"));
+        uploadElement.sendKeys("C:\\Users\\emanu\\Downloads\\foto.png");
+        Thread.sleep(1000);
+        base.clickClass("btn-success");
+
+        Thread.sleep(1000);
+
+        assertEquals("foto.png",base.getText(By.cssSelector("html body.body div.sm div.container div.row div.span9 div.tabbable div.tab-content div#catalogue-section.tab-pane.active div.sm-ui-component div#isc_B.normal div#isc_C div#isc_3.sectionStack div#isc_4 div#isc_0 div#isc_1 div#isc_J.simpleTile div#isc_K table.normal tbody tr td.name nobr")));
+
+        Thread.sleep(1000);
+
+        Actions act = new Actions(base.getDriver());
+        WebElement shop = base.getDriver().findElement((By.xpath("/html/body/div[1]/div[3]/div/div[2]/div/div/div/div/div/div/div/div/div[2]/div/div[2]/div/div[1]/div/img")));
+        act.moveToElement(shop).click().build().perform();
+        base.acceptAlert();
+
+    }
+
+    @Test
+    public void prueba14() throws InterruptedException {
+
+        base.redirect("http://localhost:8080/admin/content/contentImages.html");
+        WebElement uploadElement = base.getDriver().findElement(By.className("input-file"));
+        uploadElement.sendKeys("C:\\Users\\emanu\\Downloads\\fotovacia.png");
+        Thread.sleep(1000);
+        base.clickClass("btn-success");
+
+        Thread.sleep(1000);
+        try{
+            assertEquals("fotovacia.png",base.getText(By.cssSelector("html body.body div.sm div.container div.row div.span9 div.tabbable div.tab-content div#catalogue-section.tab-pane.active div.sm-ui-component div#isc_B.normal div#isc_C div#isc_3.sectionStack div#isc_4 div#isc_0 div#isc_1 div#isc_J.simpleTile div#isc_K table.normal tbody tr td.name nobr")));
+        }catch(Exception e){
+            assertTrue(false);
+        }
+
+    }
+
+    @Test
+    public void prueba15() throws InterruptedException {
+
+        base.redirect("http://localhost:8080/admin/content/contentImages.html");
+        WebElement uploadElement = base.getDriver().findElement(By.className("input-file"));
+        uploadElement.sendKeys("C:\\Users\\emanu\\Downloads\\fotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofo.png");
+        Thread.sleep(1000);
+        base.clickClass("btn-success");
+
+        Thread.sleep(1000);
+
+        assertNotEquals("fotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofo.png",base.getText(By.cssSelector("html body.body div.sm div.container div.row div.span9 div.tabbable div.tab-content div#catalogue-section.tab-pane.active div.sm-ui-component div#isc_B.normal div#isc_C div#isc_3.sectionStack div#isc_4 div#isc_0 div#isc_1 div#isc_J.simpleTile div#isc_K table.normal tbody tr td.name nobr")));
+
+        Thread.sleep(1000);
+
+        try{
+            Actions act = new Actions(base.getDriver());
+            WebElement shop = base.getDriver().findElement((By.xpath("/html/body/div[1]/div[3]/div/div[2]/div/div/div/div/div/div/div/div/div[2]/div/div[2]/div/div[1]/div/img")));
+            act.moveToElement(shop).click().build().perform();
+            base.acceptAlert();
+        }catch (Exception e){
+
+        }
+
 
     }
 
@@ -225,6 +470,10 @@ public class PruebasDeEmanuelle {
 
     }
 
+    @After
+    public void close(){
+        base.Quit();
+    }
 
 
 }

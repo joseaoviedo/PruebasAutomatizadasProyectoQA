@@ -51,6 +51,10 @@ public class Base {
         driver.findElement(By.className(name)).click();
     }
 
+    public void clickCss(String name){
+        driver.findElement(By.cssSelector(name)).click();
+    }
+
     public Boolean isDisplayed(By locator){
         try {
             return driver.findElement(locator).isDisplayed();
@@ -83,4 +87,13 @@ public class Base {
     public void clearText(By locator){
         driver.findElement(locator).clear();
     }
+
+    public WebDriver getDriver(){
+        return driver;
+    }
+
+    public void acceptAlert(){
+        driver.switchTo().alert().accept();
+    }
+
 }
