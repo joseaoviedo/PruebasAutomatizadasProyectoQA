@@ -1,10 +1,13 @@
+package Jose;
+
+import Emanuelle.Base;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 
 import static org.junit.Assert.assertEquals;
 
-public class PruebasDeAlejandro {
+public class PruebasDeJose {
 
     @Before
     public void setup(){

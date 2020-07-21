@@ -1,3 +1,5 @@
+package Emanuelle;
+
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
@@ -67,7 +69,7 @@ public class PruebasAutomatizadasDeEmanuelle {
 
         base.clickClass("btn-success");
 
-        assertEquals("Request completed with success", base.getText(By.id("store.success")));
+        Assert.assertEquals("Request completed with success", base.getText(By.id("store.success")));
 
     }
 
@@ -94,7 +96,7 @@ public class PruebasAutomatizadasDeEmanuelle {
 
         base.clickClass("btn-success");
 
-        assertEquals("", base.getText(By.id("store.success")));
+        Assert.assertEquals("", base.getText(By.id("store.success")));
 
     }
 
@@ -120,7 +122,7 @@ public class PruebasAutomatizadasDeEmanuelle {
 
         base.clickClass("btn-success");
 
-        assertEquals("", base.getText(By.id("store.success")));
+        Assert.assertEquals("", base.getText(By.id("store.success")));
 
     }
 
@@ -148,7 +150,7 @@ public class PruebasAutomatizadasDeEmanuelle {
 
         base.clickClass("btn-success");
 
-        assertEquals("", base.getText(By.id("store.success")));
+        Assert.assertEquals("", base.getText(By.id("store.success")));
 
     }
 
@@ -175,7 +177,7 @@ public class PruebasAutomatizadasDeEmanuelle {
 
         base.clickClass("btn-success");
 
-        assertEquals("Request completed with success", base.getText(By.id("store.success")));
+        Assert.assertEquals("Request completed with success", base.getText(By.id("store.success")));
 
     }
 
@@ -202,7 +204,7 @@ public class PruebasAutomatizadasDeEmanuelle {
 
         base.clickClass("btn-success");
 
-        assertEquals("Request completed with success", base.getText(By.id("store.success")));
+        Assert.assertEquals("Request completed with success", base.getText(By.id("store.success")));
 
     }
 
@@ -229,7 +231,7 @@ public class PruebasAutomatizadasDeEmanuelle {
 
         base.clickClass("btn-success");
 
-        assertEquals("Request completed with success", base.getText(By.id("store.success")));
+        Assert.assertEquals("Request completed with success", base.getText(By.id("store.success")));
 
     }
 
@@ -274,7 +276,7 @@ public class PruebasAutomatizadasDeEmanuelle {
 
         Thread.sleep(1000);
 
-        assertEquals("No items to show.", base.getText(By.className("emptyMessage")));
+        Assert.assertEquals("No items to show.", base.getText(By.className("emptyMessage")));
 
     }
 
@@ -294,7 +296,7 @@ public class PruebasAutomatizadasDeEmanuelle {
 
         Thread.sleep(1000);
 
-        assertEquals("Request completed with success", base.getText(By.className("alert-success")));
+        Assert.assertEquals("Request completed with success", base.getText(By.className("alert-success")));
 
     }
 
@@ -313,7 +315,7 @@ public class PruebasAutomatizadasDeEmanuelle {
 
         Thread.sleep(1000);
 
-        assertNotEquals("Request completed with success", base.getText(By.className("alert-success")));
+        Assert.assertNotEquals("Request completed with success", base.getText(By.className("alert-success")));
 
     }
 
@@ -332,7 +334,7 @@ public class PruebasAutomatizadasDeEmanuelle {
 
         Thread.sleep(1000);
 
-        assertNotEquals("Request completed with success", base.getText(By.className("alert-success")));
+        Assert.assertNotEquals("Request completed with success", base.getText(By.className("alert-success")));
 
     }
 
@@ -363,7 +365,7 @@ public class PruebasAutomatizadasDeEmanuelle {
 
         Thread.sleep(1000);
 
-        assertEquals("Request completed with success", base.getText(By.className("alert-success")));
+        Assert.assertEquals("Request completed with success", base.getText(By.className("alert-success")));
 
     }
 
@@ -378,7 +380,7 @@ public class PruebasAutomatizadasDeEmanuelle {
 
         Thread.sleep(1000);
 
-        assertEquals("foto.png",base.getText(By.cssSelector("html body.body div.sm div.container div.row div.span9 div.tabbable div.tab-content div#catalogue-section.tab-pane.active div.sm-ui-component div#isc_B.normal div#isc_C div#isc_3.sectionStack div#isc_4 div#isc_0 div#isc_1 div#isc_J.simpleTile div#isc_K table.normal tbody tr td.name nobr")));
+        Assert.assertEquals("foto.png",base.getText(By.cssSelector("html body.body div.sm div.container div.row div.span9 div.tabbable div.tab-content div#catalogue-section.tab-pane.active div.sm-ui-component div#isc_B.normal div#isc_C div#isc_3.sectionStack div#isc_4 div#isc_0 div#isc_1 div#isc_J.simpleTile div#isc_K table.normal tbody tr td.name nobr")));
 
         Thread.sleep(1000);
 
@@ -400,7 +402,7 @@ public class PruebasAutomatizadasDeEmanuelle {
 
         Thread.sleep(1000);
         try{
-            assertEquals("fotovacia.png",base.getText(By.cssSelector("html body.body div.sm div.container div.row div.span9 div.tabbable div.tab-content div#catalogue-section.tab-pane.active div.sm-ui-component div#isc_B.normal div#isc_C div#isc_3.sectionStack div#isc_4 div#isc_0 div#isc_1 div#isc_J.simpleTile div#isc_K table.normal tbody tr td.name nobr")));
+            Assert.assertEquals("fotovacia.png",base.getText(By.cssSelector("html body.body div.sm div.container div.row div.span9 div.tabbable div.tab-content div#catalogue-section.tab-pane.active div.sm-ui-component div#isc_B.normal div#isc_C div#isc_3.sectionStack div#isc_4 div#isc_0 div#isc_1 div#isc_J.simpleTile div#isc_K table.normal tbody tr td.name nobr")));
         }catch(Exception e){
             assertTrue(false);
         }
@@ -418,7 +420,7 @@ public class PruebasAutomatizadasDeEmanuelle {
 
         Thread.sleep(1000);
 
-        assertNotEquals("fotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofo.png",base.getText(By.cssSelector("html body.body div.sm div.container div.row div.span9 div.tabbable div.tab-content div#catalogue-section.tab-pane.active div.sm-ui-component div#isc_B.normal div#isc_C div#isc_3.sectionStack div#isc_4 div#isc_0 div#isc_1 div#isc_J.simpleTile div#isc_K table.normal tbody tr td.name nobr")));
+        Assert.assertNotEquals("fotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofotoofo.png",base.getText(By.cssSelector("html body.body div.sm div.container div.row div.span9 div.tabbable div.tab-content div#catalogue-section.tab-pane.active div.sm-ui-component div#isc_B.normal div#isc_C div#isc_3.sectionStack div#isc_4 div#isc_0 div#isc_1 div#isc_J.simpleTile div#isc_K table.normal tbody tr td.name nobr")));
 
         Thread.sleep(1000);
 
@@ -445,7 +447,7 @@ public class PruebasAutomatizadasDeEmanuelle {
 
         Thread.sleep(1000);
 
-        assertEquals("prueba_imagen_grande.png",base.getText(By.cssSelector("html body.body div.sm div.container div.row div.span9 div.tabbable div.tab-content div#catalogue-section.tab-pane.active div.sm-ui-component div#isc_B.normal div#isc_C div#isc_3.sectionStack div#isc_4 div#isc_0 div#isc_1 div#isc_J.simpleTile div#isc_K table.normal tbody tr td.name nobr")));
+        Assert.assertEquals("prueba_imagen_grande.png",base.getText(By.cssSelector("html body.body div.sm div.container div.row div.span9 div.tabbable div.tab-content div#catalogue-section.tab-pane.active div.sm-ui-component div#isc_B.normal div#isc_C div#isc_3.sectionStack div#isc_4 div#isc_0 div#isc_1 div#isc_J.simpleTile div#isc_K table.normal tbody tr td.name nobr")));
 
         Thread.sleep(1000);
 
@@ -474,7 +476,7 @@ public class PruebasAutomatizadasDeEmanuelle {
             base.clickClass("btn-success");
 
             Thread.sleep(1000);
-            assertNotEquals("prueba.txt",base.getText(By.cssSelector("html body.body div.sm div.container div.row div.span9 div.tabbable div.tab-content div#catalogue-section.tab-pane.active div.sm-ui-component div#isc_B.normal div#isc_C div#isc_3.sectionStack div#isc_4 div#isc_0 div#isc_1 div#isc_J.simpleTile div#isc_K table.normal tbody tr td.name nobr")));
+            Assert.assertNotEquals("prueba.txt",base.getText(By.cssSelector("html body.body div.sm div.container div.row div.span9 div.tabbable div.tab-content div#catalogue-section.tab-pane.active div.sm-ui-component div#isc_B.normal div#isc_C div#isc_3.sectionStack div#isc_4 div#isc_0 div#isc_1 div#isc_J.simpleTile div#isc_K table.normal tbody tr td.name nobr")));
 
             Thread.sleep(1000);
             Actions act = new Actions(base.getDriver());
@@ -498,7 +500,7 @@ public class PruebasAutomatizadasDeEmanuelle {
 
         Thread.sleep(1000);
 
-        assertEquals("foto.png",base.getText(By.cssSelector("html body.body div.sm div.container div.row div.span9 div.tabbable div.tab-content div#catalogue-section.tab-pane.active div.sm-ui-component div#isc_B.normal div#isc_C div#isc_3.sectionStack div#isc_4 div#isc_0 div#isc_1 div#isc_J.simpleTile div#isc_K table.normal tbody tr td.name nobr")));
+        Assert.assertEquals("foto.png",base.getText(By.cssSelector("html body.body div.sm div.container div.row div.span9 div.tabbable div.tab-content div#catalogue-section.tab-pane.active div.sm-ui-component div#isc_B.normal div#isc_C div#isc_3.sectionStack div#isc_4 div#isc_0 div#isc_1 div#isc_J.simpleTile div#isc_K table.normal tbody tr td.name nobr")));
 
         Thread.sleep(1000);
 
@@ -522,7 +524,7 @@ public class PruebasAutomatizadasDeEmanuelle {
             base.clickClass("btn-success");
 
             Thread.sleep(1000);
-            assertEquals("!#$%&()=.png",base.getText(By.cssSelector("html body.body div.sm div.container div.row div.span9 div.tabbable div.tab-content div#catalogue-section.tab-pane.active div.sm-ui-component div#isc_B.normal div#isc_C div#isc_3.sectionStack div#isc_4 div#isc_0 div#isc_1 div#isc_J.simpleTile div#isc_K table.normal tbody tr td.name nobr")));
+            Assert.assertEquals("!#$%&()=.png",base.getText(By.cssSelector("html body.body div.sm div.container div.row div.span9 div.tabbable div.tab-content div#catalogue-section.tab-pane.active div.sm-ui-component div#isc_B.normal div#isc_C div#isc_3.sectionStack div#isc_4 div#isc_0 div#isc_1 div#isc_J.simpleTile div#isc_K table.normal tbody tr td.name nobr")));
 
             Thread.sleep(1000);
             Actions act = new Actions(base.getDriver());
@@ -547,7 +549,7 @@ public class PruebasAutomatizadasDeEmanuelle {
 
         Thread.sleep(1000);
 
-        assertEquals("foto.png",base.getText(By.cssSelector("#isc_Ptable > tbody:nth-child(3) > tr:nth-child(1) > td:nth-child(1) > div:nth-child(1) > nobr:nth-child(1)")));
+        Assert.assertEquals("foto.png",base.getText(By.cssSelector("#isc_Ptable > tbody:nth-child(3) > tr:nth-child(1) > td:nth-child(1) > div:nth-child(1) > nobr:nth-child(1)")));
 
         Thread.sleep(1000);
 
