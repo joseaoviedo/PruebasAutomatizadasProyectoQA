@@ -284,10 +284,7 @@ public class ProductPriceUtils {
 		if(amount==null) {
 			return "";
 		}
-		
-		
-		
-		
+
 		NumberFormat nf = null;
 
 		

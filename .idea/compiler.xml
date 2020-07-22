@@ -21,14 +21,15 @@
           <entry name="$MAVEN_REPOSITORY$/org/springframework/spring-context/4.0.3.RELEASE/spring-context-4.0.3.RELEASE.jar" />
           <entry name="$MAVEN_REPOSITORY$/joda-time/joda-time/2.9/joda-time-2.9.jar" />
         </processorPath>
-        <module name="sm-shop-model" />
         <module name="sm-shop" />
-        <module name="sm-core-model" />
-        <module name="sm-core" />
         <module name="sm-core-modules" />
+        <module name="sm-core" />
+        <module name="sm-shop-model" />
+        <module name="sm-core-model" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="PruebasAutomatizadasProyectoQA" target="1.8" />
       <module name="shopizer" target="1.8" />
       <module name="sm-core" target="1.8" />
       <module name="sm-core-model" target="1.8" />

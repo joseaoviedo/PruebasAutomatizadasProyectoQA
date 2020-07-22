@@ -27,7 +27,7 @@ import com.salesmanager.test.configuration.ConfigurationTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = {ConfigurationTest.class})
-@Ignore
+
 public class UtilsTestCase  {
 	
 	
@@ -45,11 +45,11 @@ public class UtilsTestCase  {
 	
 	@Inject
 	private GeoLocation geoLoaction;
-	
 
-	
-	//@Test
-	@Ignore
+
+
+
+	@Test
 	public void testCache() throws Exception {
 		
 
@@ -67,8 +67,7 @@ public class UtilsTestCase  {
 		
 	}
 	
-	//@Test
-	@Ignore
+	@Test
 	public void testCurrency() throws Exception {
 		
 		Currency currency = currencyService.getByCode("BGN");
