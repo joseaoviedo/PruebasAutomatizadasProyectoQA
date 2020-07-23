@@ -79,7 +79,6 @@ public class LanguageServiceImpl extends SalesManagerEntityServiceImpl<Integer, 
 		}
 		
 		return new Language(Constants.DEFAULT_LANGUAGE);
-
 	}
 	
 	@Override
