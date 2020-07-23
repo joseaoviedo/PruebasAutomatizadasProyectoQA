@@ -266,7 +266,6 @@ public class ProductPriceUtils {
 		currencyInstance = NumberFormat.getCurrencyInstance(locale);
 		currencyInstance.setCurrency(curr);
 	    return currencyInstance.format(amount.doubleValue());
-		
 
     }
 	
@@ -477,12 +476,10 @@ public class ProductPriceUtils {
 		}
 		
 		return hasDiscount;
-		
-		
-		
+
 	}
 	
-	private boolean matchPositiveInteger(String amount) {
+	public boolean matchPositiveInteger(String amount) {
 
 		Pattern pattern = Pattern.compile("^[+]?\\d*$");
 		Matcher matcher = pattern.matcher(amount);
@@ -496,7 +493,7 @@ public class ProductPriceUtils {
 	
 	private FinalPrice calculateFinalPrice(Product product) {
 
-		FinalPrice finalPrice = null;;
+		FinalPrice finalPrice = null;
 		List<FinalPrice> otherPrices = null;
 		
 
@@ -591,7 +588,7 @@ public class ProductPriceUtils {
 		return finalPrice;
 	}
 	
-	private void discountPrice(FinalPrice finalPrice) {
+	public void discountPrice(FinalPrice finalPrice) {
 		
 		finalPrice.setDiscounted(true);
 		
