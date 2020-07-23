@@ -60,10 +60,7 @@ public class ProductImageServiceImpl extends SalesManagerEntityServiceImpl<Long,
 		        cmsContentImage.setFileName( productImage.getProductImage() );
 		        cmsContentImage.setFile( inputStream );
 		        cmsContentImage.setFileContentType(FileContentType.PRODUCT);
-		        
 
-		        
-	
 				addProductImage(product,productImage,cmsContentImage);			
 			}
 		

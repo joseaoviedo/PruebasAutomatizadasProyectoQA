@@ -49,7 +49,7 @@ public class MerchantStoreApiIntegrationTest extends ServicesTestSupport {
       if (response.getStatusCode() != HttpStatus.OK) {
           throw new Exception(response.toString());
       } else {
-          final ReadableMerchantStore store = response.getBody();
+          ReadableMerchantStore store = response.getBody();
           assertNotNull(store);
       }
   }
