@@ -60,10 +60,10 @@ public class UserApiIntegrationTest extends ServicesTestSupport {
       
       newUser.getGroups().add(g);
       
-      final HttpEntity<PersistableUser> persistableUser = new HttpEntity<PersistableUser>(newUser, getHeader());
+      HttpEntity<PersistableUser> persistableUser = new HttpEntity<PersistableUser>(newUser, getHeader());
 
       ReadableUser user = null;
-      final ResponseEntity<ReadableUser> response = testRestTemplate.exchange(String.format("/api/v1/private/user/"), HttpMethod.POST,
+      ResponseEntity<ReadableUser> response = testRestTemplate.exchange(String.format("/api/v1/private/user/"), HttpMethod.POST,
           persistableUser, ReadableUser.class);
       if (response.getStatusCode() != HttpStatus.OK) {
           throw new Exception(response.toString());
@@ -79,17 +79,14 @@ public class UserApiIntegrationTest extends ServicesTestSupport {
       userPassword.setPassword(oldPassword);
       userPassword.setChangePassword(newPassword);
       
-      final HttpEntity<UserPassword> changePasswordEntity = new HttpEntity<UserPassword>(userPassword, getHeader());
-
+      HttpEntity<UserPassword> changePasswordEntity = new HttpEntity<UserPassword>(userPassword, getHeader());
       
-      final ResponseEntity<Void> changePassword = testRestTemplate.exchange(String.format("/api/v1/private/user/" + user.getId() + "/password"), HttpMethod.PATCH, changePasswordEntity, Void.class);
+      ResponseEntity<Void> changePassword = testRestTemplate.exchange(String.format("/api/v1/private/user/" + user.getId() + "/password"), HttpMethod.PATCH, changePasswordEntity, Void.class);
       if (changePassword.getStatusCode() != HttpStatus.OK) {
           throw new Exception(response.toString());
       } else {
         assertNotNull("Password changed"); 
       }
-      
-      
   }
   
 

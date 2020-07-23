@@ -79,7 +79,7 @@ public class S3ProductContentFileManager
   public List<OutputContentFile> getImages(String merchantStoreCode,
       FileContentType imageContentType) throws ServiceException {
     try {
-      // get buckets
+      // get bucketsremoveProductImage
       String bucketName = bucketName();
 
 
@@ -232,7 +232,7 @@ public class S3ProductContentFileManager
   }
 
 
-  private Bucket getBucket(String bucket_name) {
+  public Bucket getBucket(String bucket_name) {
     final AmazonS3 s3 = s3Client();
     Bucket named_bucket = null;
     List<Bucket> buckets = s3.listBuckets();
@@ -249,7 +249,7 @@ public class S3ProductContentFileManager
     return named_bucket;
   }
 
-  private Bucket createBucket(String bucket_name) {
+  public Bucket createBucket(String bucket_name) {
     final AmazonS3 s3 = s3Client();
     Bucket b = null;
     if (s3.doesBucketExistV2(bucket_name)) {
@@ -270,7 +270,7 @@ public class S3ProductContentFileManager
    * 
    * @return
    */
-  private AmazonS3 s3Client() {
+  public AmazonS3 s3Client() {
 
     AmazonS3 s3 = AmazonS3ClientBuilder.standard().withRegion(regionName()) // The first region to
                                                                             // try your request
