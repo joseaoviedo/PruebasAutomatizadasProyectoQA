@@ -1,16 +1,13 @@
 package PruebasEmanuelle;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.salesmanager.core.business.constants.Constants;
 import com.salesmanager.core.model.customer.CustomerGender;
-import com.salesmanager.core.model.merchant.MerchantStore;
-import com.salesmanager.shop.application.ShopApplication;
 import com.salesmanager.shop.model.catalog.SearchProductList;
 import com.salesmanager.shop.model.catalog.SearchProductRequest;
 import com.salesmanager.shop.model.catalog.category.*;
-import com.salesmanager.shop.model.catalog.manufacturer.PersistableManufacturer;
-import com.salesmanager.shop.model.catalog.manufacturer.ReadableManufacturer;
 import com.salesmanager.shop.model.catalog.product.*;
 import com.salesmanager.shop.model.customer.PersistableCustomer;
 import com.salesmanager.shop.model.customer.address.Address;
@@ -19,7 +16,6 @@ import com.salesmanager.shop.model.references.PersistableAddress;
 import com.salesmanager.shop.model.security.PersistableGroup;
 import com.salesmanager.shop.model.shoppingcart.PersistableShoppingCartItem;
 import com.salesmanager.shop.model.shoppingcart.ReadableShoppingCart;
-import com.salesmanager.shop.model.shoppingcart.ReadableShoppingCartItem;
 import com.salesmanager.shop.model.store.PersistableMerchantStore;
 import com.salesmanager.shop.model.store.ReadableMerchantStore;
 import com.salesmanager.shop.model.user.PersistableUser;
@@ -31,16 +27,10 @@ import com.salesmanager.test.shop.common.ServicesTestSupport;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.client.HttpServerErrorException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -55,251 +45,252 @@ import static org.springframework.http.HttpStatus.*;
 
 public class Pruebas  extends ServicesTestSupport {
 
-    @Autowired
-    private TestRestTemplate testRestTemplate;
-
     @Test
-    public void postAddCartTest() throws InterruptedException {
+    public void postAddCartTest(){
 
-        ReadableProduct product = super.readyToWorkProduct("addToCart");
+        ReadableProduct producto = super.readyToWorkProduct("addToCart");
 
-        PersistableShoppingCartItem cartItem = new PersistableShoppingCartItem();
-        cartItem.setProduct(product.getId());
-        cartItem.setQuantity(1);
+        PersistableShoppingCartItem carrito = new PersistableShoppingCartItem();
+        carrito.setProduct(producto.getId());
+        carrito.setQuantity(1);
 
-        HttpEntity<PersistableShoppingCartItem> cartEntity = new HttpEntity<>(cartItem, getHeader());
-        ResponseEntity<ReadableShoppingCart> response = testRestTemplate.postForEntity(String.format("/api/v1/cart/"), cartEntity, ReadableShoppingCart.class);
+        HttpEntity<PersistableShoppingCartItem> entidad_de_carro = new HttpEntity<>(carrito, getHeader());
+        ResponseEntity<ReadableShoppingCart> respuesta = testRestTemplate.postForEntity(String.format("/api/v1/cart/"), entidad_de_carro, ReadableShoppingCart.class);
 
-        assertNotNull(response);
-        assertThat(response.getStatusCode(), is(CREATED));
+        // Se verifica que no sea nulo
+        assertNotNull(respuesta);
+        // Se verifica que se debe crear
+        assertThat(respuesta.getStatusCode(), is(CREATED));
 
     }
 
     @Test
     public void postNullCartTest(){
 
-        PersistableShoppingCartItem cartItem = null;
+        PersistableShoppingCartItem carrito = null;
 
-        HttpEntity<PersistableShoppingCartItem> cartEntity = new HttpEntity<>(cartItem, getHeader());
-        ResponseEntity<ReadableShoppingCart> response = testRestTemplate.postForEntity(String.format("/api/v1/cart/"), cartEntity, ReadableShoppingCart.class);
+        HttpEntity<PersistableShoppingCartItem> entidad_de_carro = new HttpEntity<>(carrito, getHeader());
+        ResponseEntity<ReadableShoppingCart> respuesta = testRestTemplate.postForEntity(String.format("/api/v1/cart/"), entidad_de_carro, ReadableShoppingCart.class);
 
-        assertNotNull(response);
-        assertThat(response.getStatusCode(), is(INTERNAL_SERVER_ERROR));
+        // Se verifica que no sea nulo
+        assertNotNull(respuesta);
+        // Se verifica que retorne error
+        assertThat(respuesta.getStatusCode(), is(INTERNAL_SERVER_ERROR));
     }
 
     @Test
     public void postEmptyCartTest(){
 
-        PersistableShoppingCartItem cartItem = new PersistableShoppingCartItem();
+        PersistableShoppingCartItem carrito = new PersistableShoppingCartItem();
 
-        HttpEntity<PersistableShoppingCartItem> cartEntity = new HttpEntity<>(cartItem, getHeader());
-        ResponseEntity<ReadableShoppingCart> response = testRestTemplate.postForEntity(String.format("/api/v1/cart/"), cartEntity, ReadableShoppingCart.class);
+        HttpEntity<PersistableShoppingCartItem> entidad_de_carro = new HttpEntity<>(carrito, getHeader());
+        ResponseEntity<ReadableShoppingCart> respuesta = testRestTemplate.postForEntity(String.format("/api/v1/cart/"), entidad_de_carro, ReadableShoppingCart.class);
 
-        assertThat(response.getStatusCode(), is(SERVICE_UNAVAILABLE));
+        // Se verifica que lance el error
+        assertThat(respuesta.getStatusCode(), is(SERVICE_UNAVAILABLE));
     }
 
     @Test
     public void getCategoryTest() throws Exception {
-        HttpEntity<String> httpEntity = new HttpEntity<>(getHeader());
 
-        ResponseEntity<ReadableCategoryList> response = testRestTemplate.exchange(String.format("/api/v1/category/"), HttpMethod.GET,
-                httpEntity, ReadableCategoryList.class);
-        if (response.getStatusCode() != HttpStatus.OK) {
-            throw new Exception(response.toString());
+        HttpEntity<String> entidad_hhtp_del_header = new HttpEntity<>(getHeader());
+
+        ResponseEntity<ReadableCategoryList> respuesta = testRestTemplate.exchange(String.format("/api/v1/category/"), HttpMethod.GET,
+                entidad_hhtp_del_header, ReadableCategoryList.class);
+        if (respuesta.getStatusCode() != HttpStatus.OK) {
+            throw new Exception(respuesta.toString());
         } else {
-            final List<ReadableCategory> categories = response.getBody().getCategories();
-            assertNotNull(categories);
+            // Debe retornar la lista de las categorías
+            List<ReadableCategory> categorias = respuesta.getBody().getCategories();
+            // Se verifica que no sea nulo
+            assertNotNull(categorias);
         }
     }
 
     @Test
-    public void postCategory() throws Exception {
+    public void postCategoryTest() throws JsonProcessingException {
 
-        PersistableCategory newCategory = new PersistableCategory();
-        newCategory.setCode("javascript");
-        newCategory.setSortOrder(1);
-        newCategory.setVisible(true);
-        newCategory.setDepth(4);
+        PersistableCategory categoria = new PersistableCategory();
+        categoria.setCode("java");
+        categoria.setSortOrder(1);
+        categoria.setVisible(true);
+        categoria.setDepth(4);
 
-        Category parent = new Category();
+        Category padre = new Category();
 
-        newCategory.setParent(parent);
+        categoria.setParent(padre);
 
-        CategoryDescription description = new CategoryDescription();
-        description.setLanguage("en");
-        description.setName("Javascript");
-        description.setFriendlyUrl("javascript");
-        description.setTitle("Javascript");
+        CategoryDescription descripcion = new CategoryDescription();
+        descripcion.setLanguage("en");
+        descripcion.setName("Java");
+        descripcion.setFriendlyUrl("java");
+        descripcion.setTitle("Java");
 
-        List<CategoryDescription> descriptions = new ArrayList<>();
-        descriptions.add(description);
+        List<CategoryDescription> lista_de_descripciones = new ArrayList<>();
+        lista_de_descripciones.add(descripcion);
 
-        newCategory.setDescriptions(descriptions);
+        categoria.setDescriptions(lista_de_descripciones);
 
-        final ObjectWriter writer = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        final String json = writer.writeValueAsString(newCategory);
-
-        HttpEntity<String> entity = new HttpEntity<>(json, getHeader());
-
-        ResponseEntity response = testRestTemplate.postForEntity("/api/v1/private/category", entity, PersistableCategory.class);
-        PersistableCategory cat = (PersistableCategory) response.getBody();
-        assertThat(response.getStatusCode(), is(CREATED));
-        assertNotNull(cat.getId());
-
-    }
-
-    @Test
-    public void postCategory1() throws Exception {
-
-        final ObjectWriter writer = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        final String json = writer.writeValueAsString(null);
+        ObjectWriter writer = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String json = writer.writeValueAsString(categoria);
 
         HttpEntity<String> entity = new HttpEntity<>(json, getHeader());
 
-        ResponseEntity response = testRestTemplate.postForEntity("/api/v1/private/category", entity, PersistableCategory.class);
-        assertThat(response.getStatusCode(), is(INTERNAL_SERVER_ERROR));
+        ResponseEntity respuesta = testRestTemplate.postForEntity("/api/v1/private/category", entity, PersistableCategory.class);
+        PersistableCategory categoria_obtenida = (PersistableCategory) respuesta.getBody();
+        assertThat(respuesta.getStatusCode(), is(CREATED));
+        assertNotNull(categoria_obtenida.getId());
+    }
+
+    @Test
+    public void postCategoryNullTest() throws Exception {
+
+        ObjectWriter w = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String string_json = w.writeValueAsString(null);
+
+        HttpEntity<String> entidad = new HttpEntity<>(string_json, getHeader());
+
+        ResponseEntity respuesta = testRestTemplate.postForEntity("/api/v1/private/category", entidad, PersistableCategory.class);
+        assertThat(respuesta.getStatusCode(), is(INTERNAL_SERVER_ERROR));
 
     }
 
     @Test
-    public void deleteCategory() throws Exception {
+    public void deleteCategoryTest() throws Exception {
 
-        final HttpEntity<String> httpEntity = new HttpEntity<>(getHeader());
+        final HttpEntity<String> entidad_http = new HttpEntity<>(getHeader());
 
-        testRestTemplate.exchange("/services/DEFAULT/category/100", HttpMethod.DELETE, httpEntity, Category.class);
+        testRestTemplate.exchange("/services/DEFAULT/category/50", HttpMethod.DELETE, entidad_http, Category.class);
     }
 
     @Test
-    public void registerCustomer() {
+    public void registerCustomerTest() {
 
-        PersistableCustomer testCustomer = new PersistableCustomer();
+        PersistableCustomer cliente = new PersistableCustomer();
 
-        testCustomer.setEmailAddress("customer_test@test.com");
-        testCustomer.setPassword("customer_test");
-        testCustomer.setGender(CustomerGender.M.name());
-        testCustomer.setLanguage("en");
+        cliente.setEmailAddress("test@test.com");
+        cliente.setPassword("customer_test");
+        cliente.setGender(CustomerGender.M.name());
+        cliente.setLanguage("en");
 
-        Address billing = new Address();
+        Address informacion = new Address();
 
-        billing.setFirstName("customer_test");
-        billing.setLastName("customer_test");
-        billing.setCountry("BE");
-        testCustomer.setBilling(billing);
-        testCustomer.setStoreCode(Constants.DEFAULT_STORE);
-        HttpEntity<PersistableCustomer> entity = new HttpEntity<>(testCustomer, getHeader());
+        informacion.setFirstName("nombre");
+        informacion.setLastName("apellido");
+        informacion.setCountry("CR");
+        cliente.setBilling(informacion);
+        cliente.setStoreCode(Constants.DEFAULT_STORE);
+        HttpEntity<PersistableCustomer> entidad = new HttpEntity<>(cliente, getHeader());
 
-        ResponseEntity<PersistableCustomer> response = testRestTemplate.postForEntity("/api/v1/customer/register", entity, PersistableCustomer.class);
-        assertThat(response.getStatusCode(), is(OK));
-
-    }
-
-    @Test
-    public void registerNullCustomer() {
-
-        PersistableCustomer testCustomer = null;
-        HttpEntity<PersistableCustomer> entity = new HttpEntity<>(testCustomer, getHeader());
-
-        ResponseEntity<PersistableCustomer> response = testRestTemplate.postForEntity("/api/v1/customer/register", entity, PersistableCustomer.class);
-        assertThat(response.getStatusCode(), is(INTERNAL_SERVER_ERROR));
+        ResponseEntity<PersistableCustomer> respuesta = testRestTemplate.postForEntity("/api/v1/customer/register", entidad, PersistableCustomer.class);
+        assertThat(respuesta.getStatusCode(), is(OK));
 
     }
 
     @Test
-    public void registerWithoutAddressCustomer() {
+    public void registerNullCustomerTest() {
 
-        PersistableCustomer testCustomer = new PersistableCustomer();
+        PersistableCustomer cliente = null;
+        HttpEntity<PersistableCustomer> entidad = new HttpEntity<>(cliente, getHeader());
 
-        testCustomer.setEmailAddress("customer1@test.com");
-        testCustomer.setPassword("clear123");
-        testCustomer.setGender(CustomerGender.M.name());
-        testCustomer.setLanguage("en");
-
-        testCustomer.setStoreCode(Constants.DEFAULT_STORE);
-        HttpEntity<PersistableCustomer> entity = new HttpEntity<>(testCustomer, getHeader());
-
-        ResponseEntity<PersistableCustomer> response = testRestTemplate.postForEntity("/api/v1/customer/register", entity, PersistableCustomer.class);
-        assertThat(response.getStatusCode(), is(INTERNAL_SERVER_ERROR));
+        ResponseEntity<PersistableCustomer> respuesta = testRestTemplate.postForEntity("/api/v1/customer/register", entidad, PersistableCustomer.class);
+        assertThat(respuesta.getStatusCode(), is(INTERNAL_SERVER_ERROR));
 
     }
 
     @Test
-    public void registerWithNullAddressCustomer() {
+    public void registerWithoutAddressCustomerTest() {
 
-        PersistableCustomer testCustomer = new PersistableCustomer();
+        PersistableCustomer cliente = new PersistableCustomer();
 
-        testCustomer.setEmailAddress("customer1@test.com");
-        testCustomer.setPassword("clear123");
-        testCustomer.setGender(CustomerGender.M.name());
-        testCustomer.setLanguage("en");
+        cliente.setEmailAddress("test1@test.com");
+        cliente.setPassword("pass");
+        cliente.setGender(CustomerGender.M.name());
+        cliente.setLanguage("CR");
 
-        Address billing = new Address();
-        testCustomer.setStoreCode(Constants.DEFAULT_STORE);
-        HttpEntity<PersistableCustomer> entity = new HttpEntity<>(testCustomer, getHeader());
+        cliente.setStoreCode(Constants.DEFAULT_STORE);
+        HttpEntity<PersistableCustomer> entidad = new HttpEntity<>(cliente, getHeader());
 
-        ResponseEntity<PersistableCustomer> response = testRestTemplate.postForEntity("/api/v1/customer/register", entity, PersistableCustomer.class);
-        assertThat(response.getStatusCode(), is(INTERNAL_SERVER_ERROR));
+        ResponseEntity<PersistableCustomer> respuesta = testRestTemplate.postForEntity("/api/v1/customer/register", entidad, PersistableCustomer.class);
+        assertThat(respuesta.getStatusCode(), is(INTERNAL_SERVER_ERROR));
 
     }
 
     @Test
-    public void loginCustomer() {
+    public void registerWithNullAddressCustomerTest() {
 
+        PersistableCustomer cliente = new PersistableCustomer();
 
-        PersistableCustomer testCustomer = new PersistableCustomer();
+        cliente.setEmailAddress("test2@test.com");
+        cliente.setPassword("pass");
+        cliente.setGender(CustomerGender.M.name());
+        cliente.setLanguage("CR");
 
-        testCustomer.setEmailAddress("customer1@test.com");
-        testCustomer.setPassword("clear123");
-        testCustomer.setGender(CustomerGender.M.name());
-        testCustomer.setLanguage("en");
+        cliente.setStoreCode(Constants.DEFAULT_STORE);
+        HttpEntity<PersistableCustomer> entidad = new HttpEntity<>(cliente, getHeader());
 
-        Address billing = new Address();
+        ResponseEntity<PersistableCustomer> respuesta = testRestTemplate.postForEntity("/api/v1/customer/register", entidad, PersistableCustomer.class);
+        assertThat(respuesta.getStatusCode(), is(INTERNAL_SERVER_ERROR));
 
-        billing.setFirstName("customer1");
-        billing.setLastName("ccstomer1");
-        billing.setCountry("BE");
-        testCustomer.setBilling(billing);
-        testCustomer.setStoreCode(Constants.DEFAULT_STORE);
+    }
 
-        HttpEntity<PersistableCustomer> entity = new HttpEntity<>(testCustomer, getHeader());
+    @Test
+    public void loginCustomerTest() {
 
-        ResponseEntity<PersistableCustomer> response = testRestTemplate.postForEntity("/api/v1/customer/register", entity, PersistableCustomer.class);
-        assertThat(response.getStatusCode(), is(OK));
+        PersistableCustomer cliente = new PersistableCustomer();
 
-        // created customer can login
+        cliente.setEmailAddress("test_login3@test.com");
+        cliente.setPassword("password");
+        cliente.setGender(CustomerGender.M.name());
+        cliente.setLanguage("CR");
 
-        ResponseEntity<AuthenticationResponse> loginResponse = testRestTemplate.postForEntity("/api/v1/customer/login", new HttpEntity<>(new AuthenticationRequest("customer1@test.com", "clear123")),
+        Address informacion = new Address();
+
+        informacion.setFirstName("customer_name");
+        informacion.setLastName("customer_name");
+        informacion.setCountry("CR");
+        cliente.setBilling(informacion);
+        cliente.setStoreCode(Constants.DEFAULT_STORE);
+
+        HttpEntity<PersistableCustomer> entidad = new HttpEntity<>(cliente, getHeader());
+
+        ResponseEntity<PersistableCustomer> respuesta = testRestTemplate.postForEntity("/api/v1/customer/register", entidad, PersistableCustomer.class);
+        assertThat(respuesta.getStatusCode(), is(OK));
+
+        ResponseEntity<AuthenticationResponse> respuesta_login = testRestTemplate.postForEntity("/api/v1/customer/login", new HttpEntity<>(new AuthenticationRequest("test_login3@test.com", "password")),
                 AuthenticationResponse.class);
-        assertThat(loginResponse.getStatusCode(), is(OK));
-        assertNotNull(loginResponse.getBody().getToken());
+
+        assertThat(respuesta_login.getStatusCode(), is(OK));
+        assertNotNull(respuesta_login.getBody().getToken());
 
     }
 
     @Test
-    public void loginNotRegisterCustomer() throws Exception{
+    public void loginNotRegisterCustomerTest(){
 
         try {
 
-            ResponseEntity<AuthenticationResponse> loginResponse = testRestTemplate.postForEntity("/api/v1/customer/login", new HttpEntity<>(new AuthenticationRequest("customer1@test.com", "clear123")),
+            ResponseEntity<AuthenticationResponse> respuesta_login = testRestTemplate.postForEntity("/api/v1/customer/login", new HttpEntity<>(new AuthenticationRequest("customer4@test.com", "pass")),
                     AuthenticationResponse.class);
-            assertThat(loginResponse.getStatusCode(), is(NOT_FOUND));
-            assertNotNull(loginResponse.getBody().getToken());
+            assertThat(respuesta_login.getStatusCode(), is(NOT_FOUND));
+            assertNotNull(respuesta_login.getBody().getToken());
         }catch (NullPointerException e){
             assertTrue(true);
         }
     }
 
     @Test
-    public void createProductTest() throws Exception {
+    public void createProductTest(){
 
-        PersistableProduct product = new PersistableProduct();
-        ArrayList<Category> categories = new ArrayList<>();
-        product.setCategories(categories);
-        ProductSpecification specifications = new ProductSpecification();
-        specifications.setManufacturer(com.salesmanager.core.model.catalog.product.manufacturer.Manufacturer.DEFAULT_MANUFACTURER);
-        product.setProductSpecifications(specifications);
-        product.setPrice(BigDecimal.TEN);
-        product.setSku("123");
-        HttpEntity<PersistableProduct> entity = new HttpEntity<>(product, getHeader());
+        PersistableProduct producto = new PersistableProduct();
+        ArrayList<Category> lista_de_categorias = new ArrayList<>();
+        producto.setCategories(lista_de_categorias);
+        ProductSpecification especificaciones = new ProductSpecification();
+        especificaciones.setManufacturer(com.salesmanager.core.model.catalog.product.manufacturer.Manufacturer.DEFAULT_MANUFACTURER);
+        producto.setProductSpecifications(especificaciones);
+        producto.setPrice(BigDecimal.TEN);
+        producto.setSku("321");
+        HttpEntity<PersistableProduct> entity = new HttpEntity<>(producto, getHeader());
 
         ResponseEntity<PersistableProduct> response = testRestTemplate.postForEntity("/api/v1/private/product?store=" + Constants.DEFAULT_STORE, entity, PersistableProduct.class);
         assertThat(response.getStatusCode(), is(CREATED));
@@ -308,117 +299,170 @@ public class Pruebas  extends ServicesTestSupport {
     @Test
     public void createNullProductTest(){
 
-        PersistableProduct product = null;
-        HttpEntity<PersistableProduct> entity = new HttpEntity<>(product, getHeader());
+        PersistableProduct producto = null;
+        HttpEntity<PersistableProduct> entidad = new HttpEntity<>(producto, getHeader());
 
-        ResponseEntity<PersistableProduct> response = testRestTemplate.postForEntity("/api/v1/private/product?store=" + Constants.DEFAULT_STORE, entity, PersistableProduct.class);
-        assertThat(response.getStatusCode(), is(INTERNAL_SERVER_ERROR));
+        ResponseEntity<PersistableProduct> respuesta = testRestTemplate.postForEntity("/api/v1/private/product?store=" + Constants.DEFAULT_STORE, entidad, PersistableProduct.class);
+        assertThat(respuesta.getStatusCode(), is(INTERNAL_SERVER_ERROR));
 
     }
 
     @Test
     public void createNonValueProductTest(){
 
-        PersistableProduct product = new PersistableProduct();
-        HttpEntity<PersistableProduct> entity = new HttpEntity<>(product, getHeader());
+        PersistableProduct producto = new PersistableProduct();
+        HttpEntity<PersistableProduct> entidad = new HttpEntity<>(producto, getHeader());
 
-        ResponseEntity<PersistableProduct> response = testRestTemplate.postForEntity("/api/v1/private/product?store=" + Constants.DEFAULT_STORE, entity, PersistableProduct.class);
-        assertThat(response.getStatusCode(), is(BAD_REQUEST));
-
-    }
-
-    @Test
-    public void searchItem(){
-
-        PersistableProduct product = super.product("TESTPRODUCT");
-
-        HttpEntity<PersistableProduct> entity = new HttpEntity<>(product, getHeader());
-
-        ResponseEntity<PersistableProduct> response = testRestTemplate.postForEntity("/api/v1/private/product?store=" + Constants.DEFAULT_STORE, entity, PersistableProduct.class);
-        assertThat(response.getStatusCode(), is(CREATED));
-
-        SearchProductRequest searchRequest = new SearchProductRequest();
-        searchRequest.setQuery("TEST");
-        HttpEntity<SearchProductRequest> searchEntity = new HttpEntity<>(searchRequest, getHeader());
-
-
-        ResponseEntity<SearchProductList> searchResponse = testRestTemplate.postForEntity("/api/v1/search?store=" + Constants.DEFAULT_STORE, searchEntity, SearchProductList.class);
-        assertThat(searchResponse.getStatusCode(), is(OK));
+        ResponseEntity<PersistableProduct> respuesta = testRestTemplate.postForEntity("/api/v1/private/product?store=" + Constants.DEFAULT_STORE, entidad, PersistableProduct.class);
+        assertThat(respuesta.getStatusCode(), is(BAD_REQUEST));
 
     }
 
     @Test
-    public void searchItem1(){
+    public void searchItemTest(){
 
-        SearchProductRequest searchRequest = new SearchProductRequest();
-        searchRequest.setQuery("query_test");
-        HttpEntity<SearchProductRequest> searchEntity = new HttpEntity<>(searchRequest, getHeader());
+        PersistableProduct producto = super.product("PRODUCTOPRUEBA");
 
-        ResponseEntity<SearchProductList> searchResponse = testRestTemplate.postForEntity("/api/v1/search?store=" + Constants.DEFAULT_STORE, searchEntity, SearchProductList.class);
-        assertThat(searchResponse.getStatusCode(), is(NOT_FOUND));
+        HttpEntity<PersistableProduct> entidad = new HttpEntity<>(producto, getHeader());
+
+        ResponseEntity<PersistableProduct> respuesta = testRestTemplate.postForEntity("/api/v1/private/product?store=" + Constants.DEFAULT_STORE, entidad, PersistableProduct.class);
+        assertThat(respuesta.getStatusCode(), is(CREATED));
+
+        SearchProductRequest query_de_busqueda = new SearchProductRequest();
+        query_de_busqueda.setQuery("PRODUCTOPRUEBA");
+        HttpEntity<SearchProductRequest> respuesta_de_query = new HttpEntity<>(query_de_busqueda, getHeader());
+
+
+        ResponseEntity<SearchProductList> respuesta_del_api = testRestTemplate.postForEntity("/api/v1/search?store=" + Constants.DEFAULT_STORE, respuesta_de_query, SearchProductList.class);
+        assertThat(respuesta_del_api.getStatusCode(), is(OK));
 
     }
 
     @Test
-    public void testCreateStore() throws Exception {
+    public void searchNonExistingItemTest(){
 
-        PersistableAddress address = new PersistableAddress();
-        address.setAddress("121212 simple address");
-        address.setPostalCode("12345");
-        address.setCountry("US");
-        address.setCity("FT LD");
-        address.setStateProvince("FL");
+        SearchProductRequest query_de_busqueda = new SearchProductRequest();
+        query_de_busqueda.setQuery("TEST");
+        HttpEntity<SearchProductRequest> respuesta_de_query = new HttpEntity<>(query_de_busqueda, getHeader());
 
-        PersistableMerchantStore createdStore = new PersistableMerchantStore();
-        createdStore.setCode("test");
-        createdStore.setCurrency("CAD");
-        createdStore.setDefaultLanguage("en");
-        createdStore.setEmail("test@test.com");
-        createdStore.setName("test");
-        createdStore.setPhone("444-555-6666");
-        createdStore.setSupportedLanguages(Arrays.asList("en"));
-        createdStore.setAddress(address);
+        ResponseEntity<SearchProductList> respuesta_del_api = testRestTemplate.postForEntity("/api/v1/search?store=" + Constants.DEFAULT_STORE, respuesta_de_query, SearchProductList.class);
+        assertThat(respuesta_del_api.getStatusCode(), is(NOT_FOUND));
 
-        final HttpEntity<PersistableMerchantStore> httpEntity = new HttpEntity<PersistableMerchantStore>(createdStore, getHeader());
+    }
 
-        ResponseEntity<ReadableMerchantStore> response = testRestTemplate.exchange(String.format("/api/v1/private/store/"), HttpMethod.POST, httpEntity, ReadableMerchantStore.class);
+    @Test
+    public void createStoreTest() throws Exception {
 
-        if (response.getStatusCode() != HttpStatus.OK) {
-            throw new Exception(response.toString());
+        PersistableAddress direccion = new PersistableAddress();
+        direccion.setAddress("121212 simple address");
+        direccion.setPostalCode("12345");
+        direccion.setCountry("US");
+        direccion.setCity("FT LD");
+        direccion.setStateProvince("FL");
+
+        PersistableMerchantStore tienda_creada = new PersistableMerchantStore();
+        tienda_creada.setCode("create_test");
+        tienda_creada.setCurrency("CAD");
+        tienda_creada.setDefaultLanguage("en");
+        tienda_creada.setEmail("test@test.com");
+        tienda_creada.setName("create_test");
+        tienda_creada.setPhone("444-555-6666");
+        tienda_creada.setSupportedLanguages(Arrays.asList("en"));
+        tienda_creada.setAddress(direccion);
+
+        final HttpEntity<PersistableMerchantStore> entidad = new HttpEntity<PersistableMerchantStore>(tienda_creada, getHeader());
+
+        ResponseEntity<ReadableMerchantStore> respuesta = testRestTemplate.exchange(String.format("/api/v1/private/store/"), HttpMethod.POST, entidad, ReadableMerchantStore.class);
+
+        if (respuesta.getStatusCode() != OK) {
+            throw new Exception(respuesta.toString());
         } else {
-            final ReadableMerchantStore store = response.getBody();
+            final ReadableMerchantStore store = respuesta.getBody();
             assertNotNull(store);
         }
     }
 
     @Test
-    public void testCreateStoreWithoutAdress() throws Exception {
+    public void duplicateCreateStoreTest() throws Exception {
 
-        PersistableMerchantStore createdStore = new PersistableMerchantStore();
-        createdStore.setCode("test");
-        createdStore.setCurrency("CAD");
-        createdStore.setDefaultLanguage("en");
-        createdStore.setEmail("test@test.com");
-        createdStore.setName("test");
-        createdStore.setPhone("444-555-6666");
-        createdStore.setSupportedLanguages(Arrays.asList("en"));
+        PersistableAddress direccion1 = new PersistableAddress();
+        direccion1.setAddress("direccion");
+        direccion1.setPostalCode("12345");
+        direccion1.setCountry("US");
+        direccion1.setCity("FT LD");
+        direccion1.setStateProvince("FL");
 
-        final HttpEntity<PersistableMerchantStore> httpEntity = new HttpEntity<PersistableMerchantStore>(createdStore, getHeader());
+        PersistableMerchantStore tienda_creada1 = new PersistableMerchantStore();
+        tienda_creada1.setCode("test");
+        tienda_creada1.setCurrency("CAD");
+        tienda_creada1.setDefaultLanguage("en");
+        tienda_creada1.setEmail("test@test.com");
+        tienda_creada1.setName("test");
+        tienda_creada1.setPhone("444-555-6666");
+        tienda_creada1.setSupportedLanguages(Arrays.asList("en"));
+        tienda_creada1.setAddress(direccion1);
 
-        ResponseEntity<ReadableMerchantStore> response = testRestTemplate.exchange(String.format("/api/v1/private/store/"), HttpMethod.POST, httpEntity, ReadableMerchantStore.class);
+        final HttpEntity<PersistableMerchantStore> entidad = new HttpEntity<PersistableMerchantStore>(tienda_creada1, getHeader());
 
-        if (response.getStatusCode() != HttpStatus.OK) {
+        ResponseEntity<ReadableMerchantStore> response1 = testRestTemplate.exchange(String.format("/api/v1/private/store/"), HttpMethod.POST, entidad, ReadableMerchantStore.class);
+
+        PersistableAddress direccion2 = new PersistableAddress();
+        direccion2.setAddress("direccion");
+        direccion2.setPostalCode("12345");
+        direccion2.setCountry("US");
+        direccion2.setCity("FT LD");
+        direccion2.setStateProvince("FL");
+
+        PersistableMerchantStore tienda_creada2 = new PersistableMerchantStore();
+        tienda_creada2.setCode("test");
+        tienda_creada2.setCurrency("CAD");
+        tienda_creada2.setDefaultLanguage("en");
+        tienda_creada2.setEmail("test@test.com");
+        tienda_creada2.setName("test");
+        tienda_creada2.setPhone("444-555-6666");
+        tienda_creada2.setSupportedLanguages(Arrays.asList("en"));
+        tienda_creada2.setAddress(direccion2);
+
+        HttpEntity<PersistableMerchantStore> entidad2 = new HttpEntity<PersistableMerchantStore>(tienda_creada2, getHeader());
+
+        ResponseEntity<ReadableMerchantStore> respuesta2 = testRestTemplate.exchange(String.format("/api/v1/private/store/"), HttpMethod.POST, entidad2, ReadableMerchantStore.class);
+
+
+        if (response1.getStatusCode() != OK || respuesta2.getStatusCode() != OK) {
             assertTrue(true);
         } else {
-            final ReadableMerchantStore store = response.getBody();
+            assertTrue(false);
+        }
+    }
+
+    @Test
+    public void CreateStoreWithoutAdressTest() throws Exception {
+
+        PersistableMerchantStore tienda_creada = new PersistableMerchantStore();
+        tienda_creada.setCode("test");
+        tienda_creada.setCurrency("CAD");
+        tienda_creada.setDefaultLanguage("en");
+        tienda_creada.setEmail("test@test.com");
+        tienda_creada.setName("test");
+        tienda_creada.setPhone("444-555-6666");
+        tienda_creada.setSupportedLanguages(Arrays.asList("en"));
+
+        final HttpEntity<PersistableMerchantStore> entidad = new HttpEntity<PersistableMerchantStore>(tienda_creada, getHeader());
+
+        ResponseEntity<ReadableMerchantStore> respuesta = testRestTemplate.exchange(String.format("/api/v1/private/store/"), HttpMethod.POST, entidad, ReadableMerchantStore.class);
+
+        if (respuesta.getStatusCode() != OK) {
+            assertTrue(true);
+        } else {
+            final ReadableMerchantStore store = respuesta.getBody();
             assertNotNull(store);
         }
     }
 
     @Test
-    public void testCreateStoreWithNullAdress() throws Exception {
+    public void createStoreWithNullAdressTest() throws Exception {
 
-        PersistableAddress address = new PersistableAddress();
+        PersistableAddress direccion = new PersistableAddress();
 
         PersistableMerchantStore createdStore = new PersistableMerchantStore();
         createdStore.setCode("test");
@@ -428,118 +472,148 @@ public class Pruebas  extends ServicesTestSupport {
         createdStore.setName("test");
         createdStore.setPhone("444-555-6666");
         createdStore.setSupportedLanguages(Arrays.asList("en"));
-        createdStore.setAddress(address);
+        createdStore.setAddress(direccion);
 
 
-        final HttpEntity<PersistableMerchantStore> httpEntity = new HttpEntity<PersistableMerchantStore>(createdStore, getHeader());
+        final HttpEntity<PersistableMerchantStore> entidad = new HttpEntity<PersistableMerchantStore>(createdStore, getHeader());
 
-        ResponseEntity<ReadableMerchantStore> response = testRestTemplate.exchange(String.format("/api/v1/private/store/"), HttpMethod.POST, httpEntity, ReadableMerchantStore.class);
+        ResponseEntity<ReadableMerchantStore> respuesta = testRestTemplate.exchange(String.format("/api/v1/private/store/"), HttpMethod.POST, entidad, ReadableMerchantStore.class);
 
-        if (response.getStatusCode() != HttpStatus.OK) {
+        if (respuesta.getStatusCode() != HttpStatus.OK) {
             assertTrue(true);
         } else {
-            final ReadableMerchantStore store = response.getBody();
+            final ReadableMerchantStore store = respuesta.getBody();
             assertNotNull(store);
         }
     }
 
     @Test
-    public void testCreateStoreAndDelete() throws Exception {
+    public void createStoreAndDeleteTest() throws Exception {
 
-
-        PersistableAddress address = new PersistableAddress();
-        address.setAddress("121212 simple address");
-        address.setPostalCode("54321");
-        address.setCountry("US");
-        address.setCity("FT LD");
-        address.setStateProvince("FL");
+        PersistableAddress direccion = new PersistableAddress();
+        direccion.setAddress("121212 simple address");
+        direccion.setPostalCode("54321");
+        direccion.setCountry("US");
+        direccion.setCity("FT LD");
+        direccion.setStateProvince("FL");
 
         PersistableMerchantStore createdStore = new PersistableMerchantStore();
-        createdStore.setCode("test_store_n_delete");
+        createdStore.setCode("test_store_n_delete_test");
         createdStore.setCurrency("CAD");
         createdStore.setDefaultLanguage("en");
         createdStore.setEmail("test@test.com");
         createdStore.setName("test_store_n_delete");
         createdStore.setPhone("444-555-6666");
         createdStore.setSupportedLanguages(Arrays.asList("en"));
-        createdStore.setAddress(address);
+        createdStore.setAddress(direccion);
 
-        final HttpEntity<PersistableMerchantStore> httpEntity = new HttpEntity<PersistableMerchantStore>(createdStore, getHeader());
+        final HttpEntity<PersistableMerchantStore> entidad = new HttpEntity<PersistableMerchantStore>(createdStore, getHeader());
 
-        ResponseEntity<ReadableMerchantStore> response = testRestTemplate.exchange(String.format("/api/v1/private/store/"), HttpMethod.POST, httpEntity, ReadableMerchantStore.class);
+        ResponseEntity<ReadableMerchantStore> respuesta = testRestTemplate.exchange(String.format("/api/v1/private/store/"), HttpMethod.POST, entidad, ReadableMerchantStore.class);
 
-        if (response.getStatusCode() != HttpStatus.OK) {
-            throw new Exception(response.toString());
+        if (respuesta.getStatusCode() != HttpStatus.OK) {
+            throw new Exception(respuesta.toString());
         } else {
-            final ReadableMerchantStore store = response.getBody();
-            assertNotNull(store);
+            final ReadableMerchantStore tienda = respuesta.getBody();
+            assertNotNull(tienda);
         }
 
         //delete store
-        ResponseEntity<Void> deleteResponse = testRestTemplate.exchange(String.format("/api/v1/private/store/" + "test_store_n_delete"), HttpMethod.DELETE, httpEntity, Void.class);
+        ResponseEntity<Void> respuesta_eliminada = testRestTemplate.exchange(String.format("/api/v1/private/store/" + "test_store_n_delete_test"), HttpMethod.DELETE, respuesta, Void.class);
 
-        assertThat(deleteResponse.getStatusCode(), Matchers.is(HttpStatus.OK));
+        assertThat(respuesta_eliminada.getStatusCode(), Matchers.is(HttpStatus.OK));
 
     }
 
     @Test
-    public void deleteEmptyStore(){
+    public void deleteEmptyStoreTest(){
 
-        PersistableMerchantStore createdStore = new PersistableMerchantStore();
+        PersistableMerchantStore tienda_creada = new PersistableMerchantStore();
 
-        final HttpEntity<PersistableMerchantStore> httpEntity = new HttpEntity<PersistableMerchantStore>(createdStore, getHeader());
+        final HttpEntity<PersistableMerchantStore> entidad = new HttpEntity<PersistableMerchantStore>(tienda_creada, getHeader());
 
-        //delete store
-        ResponseEntity<Void> deleteResponse = testRestTemplate.exchange(String.format("/api/v1/private/store/" + "delete_empty_store"), HttpMethod.DELETE, httpEntity, Void.class);
+        ResponseEntity<Void> respuesta_eliminada = testRestTemplate.exchange(String.format("/api/v1/private/store/" + "delete_empty_store"), HttpMethod.DELETE, entidad, Void.class);
 
-        MatcherAssert.assertThat(deleteResponse.getStatusCode(), Matchers.is(HttpStatus.NOT_FOUND));
+        MatcherAssert.assertThat(respuesta_eliminada.getStatusCode(), Matchers.is(HttpStatus.NOT_FOUND));
     }
 
     @Test
-    public void deleteNullStore(){
+    public void deleteNullStoreTest(){
 
-        PersistableMerchantStore createdStore = null;
+        PersistableMerchantStore tienda_creada = null;
 
-        final HttpEntity<PersistableMerchantStore> httpEntity = new HttpEntity<PersistableMerchantStore>(createdStore, getHeader());
+        final HttpEntity<PersistableMerchantStore> entidad = new HttpEntity<PersistableMerchantStore>(tienda_creada, getHeader());
 
-        //delete store
-        ResponseEntity<Void> deleteResponse = testRestTemplate.exchange(String.format("/api/v1/private/store/" + "delete_null_store"), HttpMethod.DELETE, httpEntity, Void.class);
+        ResponseEntity<Void> respuesta_eliminada = testRestTemplate.exchange(String.format("/api/v1/private/store/" + "delete_null_store"), HttpMethod.DELETE, entidad, Void.class);
 
-        MatcherAssert.assertThat(deleteResponse.getStatusCode(), Matchers.is(HttpStatus.NOT_FOUND));
+        MatcherAssert.assertThat(respuesta_eliminada.getStatusCode(), Matchers.is(HttpStatus.NOT_FOUND));
     }
 
     public void createCustomerNewsTest() throws Exception {
 
-        PersistableCustomerOptin customerOption = new PersistableCustomerOptin();
-        customerOption.setEmail("test@test.com");
-        customerOption.setFirstName("Jack");
-        customerOption.setLastName("John");
+        PersistableCustomerOptin opcion_del_cliente = new PersistableCustomerOptin();
+        opcion_del_cliente.setEmail("test@test.com");
+        opcion_del_cliente.setFirstName("Jack");
+        opcion_del_cliente.setLastName("John");
 
-        ObjectWriter writer = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        String json = writer.writeValueAsString(customerOption);
+        ObjectWriter w = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String json = w.writeValueAsString(opcion_del_cliente);
 
-        HttpEntity<String> e = new HttpEntity<>(json);
-        ResponseEntity<?> resp = testRestTemplate.postForEntity("/api/v1/newsletter", e, PersistableCustomerOptin.class);
+        HttpEntity<String> entidad = new HttpEntity<>(json);
+        ResponseEntity<?> respuesta = testRestTemplate.postForEntity("/api/v1/newsletter", entidad, PersistableCustomerOptin.class);
 
-        if (resp.getStatusCode() != HttpStatus.OK) {
-            throw new Exception(resp.toString());
+        if (respuesta.getStatusCode() != HttpStatus.OK) {
+            throw new Exception(respuesta.toString());
         } else {
             assertTrue(true);
         }
     }
 
+    @Test
+    public void createDeplicateCustomerNewsTest() throws Exception {
+
+        PersistableCustomerOptin respuesta_cliente1 = new PersistableCustomerOptin();
+        respuesta_cliente1.setEmail("test@test.com");
+        respuesta_cliente1.setFirstName("Emanuelle");
+        respuesta_cliente1.setLastName("John");
+
+        ObjectWriter writer1 = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String json1 = writer1.writeValueAsString(respuesta_cliente1);
+
+        HttpEntity<String> entidad1 = new HttpEntity<>(json1);
+        ResponseEntity<?> resp1 = testRestTemplate.postForEntity("/api/v1/newsletter", entidad1, PersistableCustomerOptin.class);
+
+        PersistableCustomerOptin respuesta_cliente2 = new PersistableCustomerOptin();
+        respuesta_cliente2.setEmail("test@test.com");
+        respuesta_cliente2.setFirstName("Emanuelle");
+        respuesta_cliente2.setLastName("John");
+
+        ObjectWriter writer2 = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String json2 = writer2.writeValueAsString(respuesta_cliente2);
+
+        HttpEntity<String> entidad2 = new HttpEntity<>(json2);
+        ResponseEntity<?> resp2 = testRestTemplate.postForEntity("/api/v1/newsletter", entidad2, PersistableCustomerOptin.class);
+
+
+        if (resp1.getStatusCode() != HttpStatus.OK || resp2.getStatusCode() != HttpStatus.OK) {
+            assertTrue(true);
+        } else {
+            assertTrue(false);
+        }
+    }
+
     public void createEmptyCustomerNewsTest() throws Exception {
 
-        PersistableCustomerOptin customerOption = new PersistableCustomerOptin();
+        PersistableCustomerOptin respuesta_cliente = new PersistableCustomerOptin();
 
         ObjectWriter writer = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        String json = writer.writeValueAsString(customerOption);
+        String json = writer.writeValueAsString(respuesta_cliente);
 
-        HttpEntity<String> e = new HttpEntity<>(json);
-        ResponseEntity<?> resp = testRestTemplate.postForEntity("/api/v1/newsletter", e, PersistableCustomerOptin.class);
+        HttpEntity<String> entidad = new HttpEntity<>(json);
+        ResponseEntity<?> respuesta = testRestTemplate.postForEntity("/api/v1/newsletter", entidad, PersistableCustomerOptin.class);
 
-        if (resp.getStatusCode() != HttpStatus.OK) {
-            assertNotNull(resp);
+        if (respuesta.getStatusCode() != HttpStatus.OK) {
+            assertNotNull(respuesta);
             assertTrue(true);
         } else {
             assertTrue(false);
@@ -548,14 +622,14 @@ public class Pruebas  extends ServicesTestSupport {
 
     public void createNullCustomerNewsTest() throws Exception {
 
-        ObjectWriter writer = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        String json = writer.writeValueAsString(null);
+        ObjectWriter w = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String json = w.writeValueAsString(null);
 
-        HttpEntity<String> e = new HttpEntity<>(json);
-        ResponseEntity<?> resp = testRestTemplate.postForEntity("/api/v1/newsletter", e, PersistableCustomerOptin.class);
+        HttpEntity<String> entidad = new HttpEntity<>(json);
+        ResponseEntity<?> respuesta = testRestTemplate.postForEntity("/api/v1/newsletter", entidad, PersistableCustomerOptin.class);
 
-        if (resp.getStatusCode() != HttpStatus.OK) {
-            assertNotNull(resp);
+        if (respuesta.getStatusCode() != HttpStatus.OK) {
+            assertNotNull(respuesta);
             assertTrue(true);
         } else {
             assertTrue(false);
@@ -566,51 +640,49 @@ public class Pruebas  extends ServicesTestSupport {
     @Test
     public void getUserTest() throws Exception {
 
-        PersistableUser newUser = new PersistableUser();
-        newUser.setDefaultLanguage("en");
-        newUser.setEmailAddress("test@test.com");
-        newUser.setFirstName("Test");
-        newUser.setLastName("User");
-        newUser.setUserName("test@test.com");
-        newUser.setPassword("Password1");
+        PersistableUser usuario_nuevo = new PersistableUser();
+        usuario_nuevo.setDefaultLanguage("en");
+        usuario_nuevo.setEmailAddress("test_get@test.com");
+        usuario_nuevo.setFirstName("Testget");
+        usuario_nuevo.setLastName("Userget");
+        usuario_nuevo.setUserName("test_get@test.com");
+        usuario_nuevo.setPassword("Password1");
 
-        PersistableGroup g = new PersistableGroup();
-        g.setName("ADMIN");
+        PersistableGroup grupo_nuevo = new PersistableGroup();
+        grupo_nuevo.setName("ADMIN");
 
-        newUser.getGroups().add(g);
+        usuario_nuevo.getGroups().add(grupo_nuevo);
 
-        HttpEntity<PersistableUser> persistableUser = new HttpEntity<PersistableUser>(newUser, getHeader());
+        HttpEntity<PersistableUser> entidad_usuario = new HttpEntity<PersistableUser>(usuario_nuevo, getHeader());
 
         ReadableUser user = null;
-        ResponseEntity<ReadableUser> response = testRestTemplate.exchange(String.format("/api/v1/private/user/"), HttpMethod.POST,
-                persistableUser, ReadableUser.class);
-        if (response.getStatusCode() != HttpStatus.OK) {
+        ResponseEntity<ReadableUser> respuesta_usuario = testRestTemplate.exchange(String.format("/api/v1/private/user/"), HttpMethod.POST,
+                entidad_usuario, ReadableUser.class);
+        if (respuesta_usuario.getStatusCode() != OK) {
             assertTrue(false);
         } else {
-            user = response.getBody();
+            user = respuesta_usuario.getBody();
             assertNotNull(user);
         }
 
-        System.out.println(persistableUser.getBody().getId());
+        HttpEntity<String> entidad_usuarios = new HttpEntity<>(getHeader());
 
-        HttpEntity<String> httpEntity = new HttpEntity<>(getHeader());
-
-        ResponseEntity<ReadableUser> response1 = testRestTemplate.exchange(String.format("/api/v1/private/users/" + 1L), HttpMethod.GET,
-                httpEntity, ReadableUser.class);
-        if (response.getStatusCode() != HttpStatus.OK) {
-            throw new Exception(response.toString());
+        ResponseEntity<ReadableUser> respuesta = testRestTemplate.exchange(String.format("/api/v1/private/users/" + 1L), HttpMethod.GET,
+                entidad_usuarios, ReadableUser.class);
+        if (respuesta.getStatusCode() != OK) {
+            throw new Exception(respuesta_usuario.toString());
         } else {
-            assertNotNull(user);
+            assertEquals(respuesta.getStatusCode(),OK);
         }
     }
 
     @Test
     public void getNotExistingUserTest() throws Exception {
-        HttpEntity<String> httpEntity = new HttpEntity<>(getHeader());
+        HttpEntity<String> entidad = new HttpEntity<>(getHeader());
 
-        ResponseEntity<ReadableUser> response = testRestTemplate.exchange(String.format("/api/v1/private/users/" + 1423L), HttpMethod.GET,
-                httpEntity, ReadableUser.class);
-        if (response.getStatusCode() != HttpStatus.OK) {
+        ResponseEntity<ReadableUser> respuesta = testRestTemplate.exchange(String.format("/api/v1/private/users/" + 1423L), HttpMethod.GET,
+                entidad, ReadableUser.class);
+        if (respuesta.getStatusCode() != HttpStatus.OK) {
             assertTrue(true);
         } else {
             assertTrue(false);
@@ -619,18 +691,18 @@ public class Pruebas  extends ServicesTestSupport {
 
     @Test
     public void changePasswordWithoutUserTest() throws Exception {
-        String oldPassword = "password1";
-        String newPassword = "password2";
+        String vieja = "password1";
+        String nueva = "password2";
 
-        UserPassword userPassword = new UserPassword();
-        userPassword.setPassword(oldPassword);
-        userPassword.setChangePassword(newPassword);
+        UserPassword contrasena = new UserPassword();
+        contrasena.setPassword(vieja);
+        contrasena.setChangePassword(nueva);
 
-        HttpEntity<UserPassword> changePasswordEntity = new HttpEntity<UserPassword>(userPassword, getHeader());
+        HttpEntity<UserPassword> changePasswordEntity = new HttpEntity<UserPassword>(contrasena, getHeader());
 
 
-        ResponseEntity<Void> changePassword = testRestTemplate.exchange(String.format("/api/v1/private/user/" + 2L + "/password"), HttpMethod.PATCH, changePasswordEntity, Void.class);
-        if (changePassword.getStatusCode() != HttpStatus.OK) {
+        ResponseEntity<Void> respuesta_cambio = testRestTemplate.exchange(String.format("/api/v1/private/user/" + 2L + "/password"), HttpMethod.PATCH, changePasswordEntity, Void.class);
+        if (respuesta_cambio.getStatusCode() != HttpStatus.OK) {
             assertTrue(true);
         } else {
             assertTrue(false);
@@ -638,45 +710,45 @@ public class Pruebas  extends ServicesTestSupport {
     }
 
     @Test
-    public void createUserChangePassword() throws Exception {
+    public void createUserChangePasswordTest() throws Exception {
 
-        PersistableUser newUser = new PersistableUser();
-        newUser.setDefaultLanguage("en");
-        newUser.setEmailAddress("test@test.com");
-        newUser.setFirstName("Test");
-        newUser.setLastName("User");
-        newUser.setUserName("test@test.com");
-        newUser.setPassword("password1");
+        PersistableUser nuevo_usuario = new PersistableUser();
+        nuevo_usuario.setDefaultLanguage("en");
+        nuevo_usuario.setEmailAddress("test_create_change@test.com");
+        nuevo_usuario.setFirstName("test_create_changeTest");
+        nuevo_usuario.setLastName("test_create_changeUser");
+        nuevo_usuario.setUserName("test_create_changetest@test.com");
+        nuevo_usuario.setPassword("password1");
 
-        PersistableGroup g = new PersistableGroup();
-        g.setName("ADMIN");
+        PersistableGroup grupo = new PersistableGroup();
+        grupo.setName("ADMIN");
 
-        newUser.getGroups().add(g);
+        nuevo_usuario.getGroups().add(grupo);
 
-        HttpEntity<PersistableUser> persistableUser = new HttpEntity<PersistableUser>(newUser, getHeader());
+        HttpEntity<PersistableUser> entidad_usuario = new HttpEntity<PersistableUser>(nuevo_usuario, getHeader());
 
         ReadableUser user = null;
-        ResponseEntity<ReadableUser> response = testRestTemplate.exchange(String.format("/api/v1/private/user/"), HttpMethod.POST,
-                persistableUser, ReadableUser.class);
-        if (response.getStatusCode() != HttpStatus.OK) {
-            throw new Exception(response.toString());
+        ResponseEntity<ReadableUser> respuesta = testRestTemplate.exchange(String.format("/api/v1/private/user/"), HttpMethod.POST,
+                entidad_usuario, ReadableUser.class);
+        if (respuesta.getStatusCode() != OK) {
+            throw new Exception(respuesta.toString());
         } else {
-            user = response.getBody();
+            user = respuesta.getBody();
             assertNotNull(user);
         }
 
-        String oldPassword = "password1";
-        String newPassword = "password2";
+        String vieja = "password1";
+        String nueva = "password2";
 
-        UserPassword userPassword = new UserPassword();
-        userPassword.setPassword(oldPassword);
-        userPassword.setChangePassword(newPassword);
+        UserPassword contrasena_usuario = new UserPassword();
+        contrasena_usuario.setPassword(vieja);
+        contrasena_usuario.setChangePassword(nueva);
 
-        HttpEntity<UserPassword> changePasswordEntity = new HttpEntity<UserPassword>(userPassword, getHeader());
+        HttpEntity<UserPassword> changePasswordEntity = new HttpEntity<UserPassword>(contrasena_usuario, getHeader());
 
 
-        ResponseEntity<Void> changePassword = testRestTemplate.exchange(String.format("/api/v1/private/user/" + user.getId() + "/password"), HttpMethod.PATCH, changePasswordEntity, Void.class);
-        if (changePassword.getStatusCode() != HttpStatus.OK) {
+        ResponseEntity<Void> respuesta_cambio = testRestTemplate.exchange(String.format("/api/v1/private/user/" + user.getId() + "/password"), HttpMethod.PATCH, changePasswordEntity, Void.class);
+        if (respuesta_cambio.getStatusCode() != OK) {
             assertTrue(false);
         } else {
             assertTrue(true);
