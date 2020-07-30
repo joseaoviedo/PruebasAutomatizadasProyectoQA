@@ -29,13 +29,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="PruebasAutomatizadasProyectoQA" target="1.8" />
       <module name="shopizer" target="1.8" />
-      <module name="sm-core" target="1.8" />
-      <module name="sm-core-model" target="1.8" />
-      <module name="sm-core-modules" target="1.8" />
-      <module name="sm-shop" target="1.8" />
-      <module name="sm-shop-model" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

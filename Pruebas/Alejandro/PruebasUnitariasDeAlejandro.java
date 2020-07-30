@@ -1,4 +1,4 @@
-package Alejandro;
+package Pruebas.Alejandro;
 
 import org.junit.Test;
 

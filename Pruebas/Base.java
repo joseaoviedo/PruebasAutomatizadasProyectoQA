@@ -1,4 +1,4 @@
-package Emanuelle;
+package Pruebas;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -16,7 +16,7 @@ public class Base {
     }
 
     public WebDriver firefoxDriverConnection(){
-        System.setProperty("webdriver.gecko.driver","src\\main\\resources\\geckodriver.exe");
+        System.setProperty("webdriver.gecko.driver","Pruebas\\geckodriver.exe");
         driver = new FirefoxDriver();
         return driver;
     }
