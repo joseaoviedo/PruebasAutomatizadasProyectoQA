@@ -57,6 +57,8 @@ public class Base {
         driver.findElement(By.cssSelector(name)).click();
     }
 
+    public void clickXPath(String name){driver.findElement(By.xpath(name)).click(); }
+
     public Boolean isDisplayed(By locator){
         try {
             return driver.findElement(locator).isDisplayed();
